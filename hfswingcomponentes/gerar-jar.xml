@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<project name="hfswingcomponentes" default="distribuir" basedir=".">
+
+	<!-- propriedades do projeto com os nomes dos diretórios -->
+
+	<property name="autor" value="Henrique Figueiredo de Souza" />
+	
+	<property name="src" value="${basedir}/src" />
+	<property name="build" value="${basedir}/bin" />
+	<property name="dist" value="${basedir}/dist" />
+
+	<echo>Diretório fonte: ${src}</echo>
+	<echo>Diretório binarios: ${build}</echo>
+	<echo>Diretório distribuição: ${dist}</echo>
+
+	<target name="distribuir">
+		<echo>Gerando o .jar do projeto</echo>
+		<jar jarfile="${dist}/hfswing-componentes.jar" basedir="${build}"
+			includes="**/*.*" >
+<!--			manifest="${src}/META-INF/MANIFEST.MF"> -->
+			<manifest>  
+				<attribute name="Built-By" value="${autor}"/>
+			</manifest>  
+		</jar>
+	</target>
+
+</project>

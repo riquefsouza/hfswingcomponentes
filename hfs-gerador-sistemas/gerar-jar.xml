@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<project name="GeradorSistemas" default="distribuir" basedir=".">
+
+	<!-- propriedades do projeto com os nomes dos diretórios -->
+
+	<property name="autor" value="Henrique Figueiredo de Souza" />
+	<property name="mainclass" value="guardadir.GuardaDir" />
+	<property name="splash" value="guardadir/recursos/imagens/Splash.jpg" />
+	
+	<property name="src" value="${basedir}/src" />
+	<property name="build" value="${basedir}/bin" />
+	<property name="dist" value="${basedir}/dist" />
+	<property name="arquivoConf" value="${basedir}/GeradorSistemas.conf" />
+
+	<property name="lib1" value="lib/commons-beanutils-1.5.jar" />
+	<property name="lib2" value="lib/commons-collections-2.1.jar" /> 
+	<property name="lib3" value="lib/commons-digester-1.7.jar" /> 
+	<property name="lib4" value="lib/commons-javaflow-20060411.jar" /> 
+	<property name="lib5" value="lib/commons-logging-1.0.2.jar" /> 
+	<property name="lib6" value="lib/itext-1.3.1.jar" /> 
+	<property name="lib7" value="lib/jasperreports-1.2.2.jar" /> 
+	<property name="lib8" value="lib/jxl.jar" /> 
+	<property name="lib9" value="lib/png-encoder-1.5.jar" />
+	<property name="lib10" value="lib/sqlitejdbc-v056.jar" />
+	<property name="classpath" value="${lib1} ${lib2} ${lib3} ${lib4} ${lib5} ${lib6} ${lib7} ${lib8} ${lib9} ${lib10}" />	
+
+	<echo>Diretório fonte: ${src}</echo>
+	<echo>Diretório binarios: ${build}</echo>
+	<echo>Diretório distribuição: ${dist}</echo>
+
+	<target name="distribuir">
+		<echo>Gerando o .jar do projeto</echo>
+		<jar jarfile="${dist}/HFSGeradorSistemas.jar" basedir="${build}"
+			includes="**/*.*" >
+<!--			manifest="${src}/META-INF/MANIFEST.MF"> -->
+			<manifest>  
+				<attribute name="Built-By" value="${autor}"/>
+			    <attribute name="Main-Class" value="${mainclass}" />
+				<attribute name="Sealed" value="true"/>
+			    <attribute name="Class-path" value="${classpath}" />  
+				<attribute name="SplashScreen-Image" value="${splash}" />
+			</manifest>  
+		</jar>
+		<copy file="${arquivoConf}" todir="${dist}"/>
+	</target>
+
+</project>

@@ -1,0 +1,151 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com</groupId>
+	<artifactId>hfs-gerador-sistemas</artifactId>
+	<version>1.0</version>
+	<name>HFS Gerador de Sistemas</name>
+	<description>HFS Gerador de Sistemas</description>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+
+		<!-- maven-plugin -->
+		<version.war.plugin>2.6</version.war.plugin>
+		<version.jar.plugin>3.0.2</version.jar.plugin>
+		<version.compiler.plugin>3.5.1</version.compiler.plugin>
+		<version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<!-- relatorio -->
+		<itext.version>2.1.7</itext.version>
+		<jasperreports.version>6.5.1</jasperreports.version>
+	</properties>
+
+	<dependencies>
+	
+		<dependency>
+			<groupId>br.com</groupId>
+			<artifactId>hfswingcomponentes</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+		</dependency>
+	
+		<dependency>
+		    <groupId>com.toedter</groupId>
+		    <artifactId>jcalendar</artifactId>
+		    <version>1.4</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.xerial</groupId>
+		    <artifactId>sqlite-jdbc</artifactId>
+		    <version>3.21.0.1</version>
+		</dependency>
+		
+		<!-- #################### REPORT #################### -->
+
+		<dependency>
+		    <groupId>com.lowagie</groupId>
+		    <artifactId>itext</artifactId>
+			<version>${itext.version}</version>		    
+		    <exclusions>
+		        <exclusion>
+		            <groupId>bouncycastle</groupId>
+		            <artifactId>bcprov-jdk14</artifactId>
+		        </exclusion>
+		        <exclusion>
+		            <groupId>bouncycastle</groupId>
+		            <artifactId>bcmail-jdk14</artifactId>
+		        </exclusion>
+		        <exclusion>
+		            <groupId>org.bouncycastle</groupId>
+		            <artifactId>bctsp-jdk14</artifactId>
+		        </exclusion>
+		    </exclusions>
+		</dependency>
+
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports</artifactId>
+		    <version>${jasperreports.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>olap4j</artifactId>
+					<groupId>org.olap4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.compiler.plugin}</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-dependency-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>copy-dependencies</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>copy-dependencies</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>${project.build.directory}/lib</outputDirectory>
+			                <overWriteReleases>false</overWriteReleases>
+			                <overWriteSnapshots>false</overWriteSnapshots>
+			                <overWriteIfNewer>true</overWriteIfNewer>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${version.jar.plugin}</version>
+		        <configuration>
+					<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						<index>true</index>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib</classpathPrefix>
+							<mainClass>com.hfsgs.HFSGeradorSistemas</mainClass>
+						</manifest>
+					</archive>
+		        </configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+	
+	<repositories>
+		<repository>
+			<id>org.jboss.repository.releases</id>
+			<name>JBoss Maven Release Repository</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+		</repository>		
+		<repository>
+			<id>jaspersoft-releases</id>
+			<name>jaspersoft Releases</name>
+			<url>http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts</url>
+		</repository>
+	</repositories>
+	
+</project>
